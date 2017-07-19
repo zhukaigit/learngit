@@ -5,3 +5,4 @@ this is a new line for insert.
 fix bug issue-101.
 
 this is first line;
+this is serious bug, should be fixed;
