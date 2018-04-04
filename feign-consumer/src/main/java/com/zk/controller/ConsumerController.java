@@ -2,6 +2,7 @@ package com.zk.controller;
 
 import com.zk.model.User;
 import com.zk.servcie.HelloService;
+import com.zk.servcie.RefactorHelloService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class ConsumerController {
 
     @Autowired
     private HelloService helloService;
+    @Autowired
+    private RefactorHelloService refactorHelloService;
 
     @RequestMapping(value = "/feign-consumer", method = RequestMethod.GET)
     public String helloConsumer() {
@@ -33,6 +36,16 @@ public class ConsumerController {
         sb.append(helloService.hello("DIDI")).append("\n");
         sb.append(helloService.hello("DIDI", 30)).append("\n");
         sb.append(helloService.hello(new User("DIDI", 30))).append("\n");
+        return sb.toString();
+    }
+
+    @RequestMapping(value = "/feign-consumer3", method = RequestMethod.GET)
+    public String helloConsumer3() {
+        logger.info("feign消费者api3");
+        StringBuilder sb = new StringBuilder();
+        sb.append(refactorHelloService.hello("DIDI")).append("\n");
+        sb.append(refactorHelloService.hello("DIDI", 30)).append("\n");
+        sb.append(refactorHelloService.hello(new com.zk.api.model.User("DIDI", 30))).append("\n");
         return sb.toString();
     }
 
