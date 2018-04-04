@@ -1,16 +1,18 @@
 package com.zk.controller;
 
+import com.zk.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by zhuk on 2018/3/26.
@@ -30,6 +32,39 @@ public class HelloController {
         ServiceInstance instance = client.getLocalServiceInstance();
         logger.info("/hello, host:{}, service_id:{}", instance.getHost(), instance.getServiceId());
         String result = String.format("hello World, server_port = %s, time = %s", port, new Date().toLocaleString());
+        try {
+            int sleepTime = new Random().nextInt(3000);
+            logger.info("sleepTime : {}", sleepTime);
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
+    }
+
+    @RequestMapping(value = "/name/{name}", method = RequestMethod.POST)
+    public Map testPost(@RequestBody Map<String, String> paramParam, @PathVariable("name") String name) {
+        String info = String.format("server_port = %s, name = %s, body = %s", port, name, paramParam);
+        logger.info(info);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("name", name);
+        result.put("body", paramParam);
+        return result;
+    }
+
+    //    ============= 添加feign-consumer后代码 ==================
+    @RequestMapping(value = "/hello1", method = RequestMethod.GET)
+    public String hello(@RequestParam String name) {
+        return "hello " + name;
+    }
+
+    @RequestMapping(value = "/hello2", method = RequestMethod.GET)
+    public User hello(@RequestHeader String name, @RequestHeader Integer age) {
+        return new User(name, age);
+    }
+
+    @RequestMapping(value = "/hello3", method = RequestMethod.POST)
+    public String hello(@RequestBody User user) {
+        return String.format("Hello %s, age = %s", user.getName(), user.getAge());
     }
 }
