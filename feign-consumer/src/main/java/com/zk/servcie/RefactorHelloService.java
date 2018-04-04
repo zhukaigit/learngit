@@ -9,5 +9,5 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * 参数名来作为默认值，但是在Feign中绑定参数必须通过value属性来知名具体的参数名，不让回抛出IllegalStateException异常，
  * value属性不能为空。
  */
-@FeignClient("hello-service")
+@FeignClient(value = "HELLO-SERVICE")
 public interface RefactorHelloService extends com.zk.api.service.HelloService {}

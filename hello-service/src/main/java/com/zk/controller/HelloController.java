@@ -31,14 +31,18 @@ public class HelloController {
     public String index() {
         ServiceInstance instance = client.getLocalServiceInstance();
         logger.info("/hello, host:{}, service_id:{}", instance.getHost(), instance.getServiceId());
-        String result = String.format("hello World, server_port = %s, time = %s", port, new Date().toLocaleString());
+        //测试超时
+        int sleepTime = 0;
         try {
-            int sleepTime = new Random().nextInt(3000);
+            sleepTime = new Random().nextInt(3000);
             logger.info("sleepTime : {}", sleepTime);
             Thread.sleep(sleepTime);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        String result = String.format("hello World, server_port = %s, time = %s, sleepTime =%s"
+                , port, new Date().toLocaleString(), sleepTime);
         return result;
     }
 
