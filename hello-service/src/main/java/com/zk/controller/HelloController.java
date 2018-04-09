@@ -37,7 +37,7 @@ public class HelloController {
             sleepTime = new Random().nextInt(3000);
             logger.info("sleepTime : {}", sleepTime);
             Thread.sleep(sleepTime);
-            Thread.sleep(2000);
+//            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
