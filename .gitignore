@@ -5,6 +5,6 @@ bin/
 .idea
 *.iml
 *.bat
-
+.DS_Store
 
 
